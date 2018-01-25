@@ -1,0 +1,58 @@
+//
+//  reviewNotes.pch
+//  reviewNotes
+//
+//  Created by Shinkai on 2018/1/22.
+//  Copyright © 2018年 Shinkai. All rights reserved.
+//
+
+/**
+    pch 原理：pch 里面的内容被项目中的所有文件共有
+
+    pch 注意点：
+        - pch 需要提前编译
+        - pch 文件要与工程文件名字一样
+        - 需要做一些判断，判断下当前有没有 C 文件，若有 C，就不导入 OC 的语法
+
+    配置 pch 文件：
+        - 工程文件->Build Settings->选择 All，搜索 prefix -> Precompile Prefix Header 选择 YES
+        - Prefix Header 写提前编译头文件的路径（pch 路劲）
+        - 右击 pch 文件，选择 Show in Finder
+        - 路径从工程文件之后开始写，例如我有一个工程叫 test，pch 文件直接创建在 test 工程下，那么 pch 的路径就是 test/test.pch
+
+    pch 作用：
+        - 存放一些公用的宏
+        - 存放一些公用的头文件
+        - 自定义 Log (输出日志)
+ 
+    pch 弊端：
+        - 若很多的话，编译时间会很长
+ */
+
+// __OBJC__ 每个 OC 文件都会自动定义这个宏
+#ifdef __OBJC__
+
+//MARK: - 宏
+#define ABC 10
+
+//MARK: - 头文件
+#import "UIImage+Image.h"
+
+//MARK: - 自定义 Log
+// ... 表示在宏里面的可变参数
+// __VA_ARGS__表示函数里面的可变参数
+// 若不打印任何东西，则 注释掉 NSLog(__VA_ARGS)
+
+// 默认为测试阶段，Edti Scheme -> Test -> Build Configuration -> 切换编译环境
+// Edti Scheme -> Run -> Info -> Build Configuration -> 切换运行环境
+#ifdef DEBUG //测试
+
+#define YXSLog(...) NSLog(__VA_ARGS__)
+
+#else // 发布
+
+#define YXSLog(...)
+
+#endif
+
+#endif
